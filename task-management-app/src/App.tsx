@@ -1,7 +1,13 @@
+import { ChakraProvider, defaultSystem } from "@chakra-ui/react";
 import "./App.css";
+import { TaskDashboard } from "./modules/tasks/components/TaskDashboard";
 
 function App() {
-  return <h1>Task Management Dashboard</h1>;
+  return (
+    <ChakraProvider value={defaultSystem}>
+      <TaskDashboard />
+    </ChakraProvider>
+  );
 }
 
 export default App;
