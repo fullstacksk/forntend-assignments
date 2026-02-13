@@ -1,10 +1,14 @@
 import { Grid, GridItem } from "@chakra-ui/react";
-import { fakeTasks } from "../../../data";
 import { TaskCard } from "./TaskCard";
-export function TaskList() {
+import type { Task } from "../types/tasks";
+
+interface TaskListProps {
+  tasks: Task[];
+}
+export function TaskList({ tasks }: TaskListProps) {
   return (
     <Grid templateColumns={"repeat(3, 1fr)"} gap={4} mb={4}>
-      {fakeTasks.map((task) => (
+      {tasks.map((task) => (
         <GridItem key={task.id}>
           <TaskCard task={task} />
         </GridItem>

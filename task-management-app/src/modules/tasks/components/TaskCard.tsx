@@ -1,5 +1,6 @@
 import { TaskStatusEnum, type Task } from "../types/tasks";
 import { Badge, Card, Flex, Text } from "@chakra-ui/react";
+import { getStatusColor } from "../utils/getStatusColor";
 
 interface TaskProps {
   task: Task;
@@ -34,17 +35,4 @@ function TaskTitle({ title, status }: TaskTitleProps) {
       </Badge>
     </Flex>
   );
-}
-
-function getStatusColor(status: Task["status"]) {
-  switch (status) {
-    case "PENDING":
-      return "yellow";
-    case "IN_PROGRESS":
-      return "blue";
-    case "COMPLETED":
-      return "green";
-    default:
-      return "gray";
-  }
 }
