@@ -11,9 +11,14 @@ export const TaskStatusEnum = {
 
 export const taskInputSchema = z.object({
   id: z.string().optional(),
-  title: z.string().trim().min(1, "Title is required"),
+  title: z
+    .string()
+    .trim()
+    .min(1, "Title is required")
+    .max(25, "Title must be at most 25 characters"),
   description: z
     .string()
+    .trim()
     .max(100, "Description must be at most 100 characters")
     .optional(),
   status: z.enum(

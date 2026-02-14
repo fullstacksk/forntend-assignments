@@ -10,7 +10,7 @@ type TaskSummaryProps = {
 export function TaskSummary({ taskSummary }: TaskSummaryProps) {
   return (
     <Flex
-      gap={3}
+      gap={{ base: 2, lg: 3 }}
       px={3}
       py={2}
       borderRadius="md"
@@ -26,7 +26,7 @@ export function TaskSummary({ taskSummary }: TaskSummaryProps) {
             key={status}
             align="center"
             gap={2}
-            px={{ mdDown: 1, lg: 3 }}
+            px={{ base: 1.5, lg: 3 }}
             py={1.5}
             borderRadius="full"
             bg={`${palette}.200`}
@@ -37,7 +37,12 @@ export function TaskSummary({ taskSummary }: TaskSummaryProps) {
               {TaskStatusEnum[status as TaskStatus]}
             </Text>
 
-            <Text fontSize="sm" fontWeight="bold" color={`${palette}.600`}>
+            <Text
+              fontSize="sm"
+              fontWeight="bold"
+              minW={3}
+              color={`${palette}.600`}
+            >
               {count}
             </Text>
           </Flex>
