@@ -25,3 +25,11 @@ export function filterTasksByStatus(tasks: Task[], status?: TaskStatus) {
   if (!status) return tasks;
   return tasks.filter((task) => task.status === status);
 }
+
+export function sortTasksByDueDate(tasks: Task[], ascending = true) {
+  return [...tasks].sort((a, b) => {
+    const dateA = new Date(a.dueDate).getTime();
+    const dateB = new Date(b.dueDate).getTime();
+    return ascending ? dateA - dateB : dateB - dateA;
+  });
+}
