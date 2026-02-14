@@ -14,12 +14,7 @@ import type { AppDispatch } from "../../../store";
 import { useDispatch } from "react-redux";
 import { addTask, updateTask } from "../../../store/slices/taskSlice";
 import { useEffect } from "react";
-
-const statusOptions = [
-  { label: "Pending", value: "PENDING" },
-  { label: "In Progress", value: "IN_PROGRESS" },
-  { label: "Completed", value: "COMPLETED" },
-];
+import { taskStatusOptions } from "../utils/constants";
 
 interface AddEditTaskFormModalProps {
   open: boolean;
@@ -115,8 +110,8 @@ export function AddEditTaskFormModal({
                     control={control}
                     render={({ field }) => (
                       <Select
-                        options={statusOptions}
-                        value={statusOptions.find(
+                        options={taskStatusOptions}
+                        value={taskStatusOptions.find(
                           (option) => option.value === field.value,
                         )}
                         onChange={(option) => field.onChange(option?.value)}

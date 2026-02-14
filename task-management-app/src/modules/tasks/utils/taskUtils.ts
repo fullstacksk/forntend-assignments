@@ -1,4 +1,4 @@
-import type { Task } from "../types/tasks";
+import type { Task, TaskStatus } from "../types/tasks";
 
 export type TTaskSummary = {
   PENDING: number;
@@ -19,4 +19,9 @@ export function getTaskSummary(tasks: Task[]): TTaskSummary {
   }
 
   return statusSummary;
+}
+
+export function filterTasksByStatus(tasks: Task[], status?: TaskStatus) {
+  if (!status) return tasks;
+  return tasks.filter((task) => task.status === status);
 }
