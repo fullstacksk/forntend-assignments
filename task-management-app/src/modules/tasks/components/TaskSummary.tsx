@@ -1,4 +1,4 @@
-import { Badge, Flex } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import type { TTaskSummary } from "../utils/taskUtils";
 import { getStatusColor } from "../utils/getStatusColor";
 import { TaskStatusEnum, type TaskStatus } from "../types/tasks";
@@ -6,21 +6,43 @@ import { TaskStatusEnum, type TaskStatus } from "../types/tasks";
 type TaskSummaryProps = {
   taskSummary: TTaskSummary;
 };
+
 export function TaskSummary({ taskSummary }: TaskSummaryProps) {
   return (
-    <Flex gap={2}>
-      {Object.entries(taskSummary).map(([status, count]) => (
-        <Badge
-          key={status}
-          colorPalette={getStatusColor(status as TaskStatus)}
-          variant="solid"
-          textTransform="capitalize"
-          p={4}
-          fontSize={"md"}
-        >
-          {TaskStatusEnum[status as TaskStatus]} ({count})
-        </Badge>
-      ))}
+    <Flex
+      gap={3}
+      px={3}
+      py={2}
+      borderRadius="md"
+      bg="gray.50"
+      align="center"
+      wrap="wrap"
+    >
+      {Object.entries(taskSummary).map(([status, count]) => {
+        const palette = getStatusColor(status as TaskStatus);
+
+        return (
+          <Flex
+            key={status}
+            align="center"
+            gap={2}
+            px={{ mdDown: 1, lg: 3 }}
+            py={1.5}
+            borderRadius="full"
+            bg={`${palette}.200`}
+          >
+            <Box w="8px" h="8px" borderRadius="full" bg={`${palette}.500`} />
+
+            <Text fontSize="sm" fontWeight="medium">
+              {TaskStatusEnum[status as TaskStatus]}
+            </Text>
+
+            <Text fontSize="sm" fontWeight="bold" color={`${palette}.600`}>
+              {count}
+            </Text>
+          </Flex>
+        );
+      })}
     </Flex>
   );
 }
