@@ -8,7 +8,7 @@ type TaskSummaryProps = {
 };
 export function TaskSummary({ taskSummary }: TaskSummaryProps) {
   return (
-    <Flex mb={4} gap={2} justifyContent="start">
+    <Flex gap={2}>
       {Object.entries(taskSummary).map(([status, count]) => (
         <Badge
           key={status}

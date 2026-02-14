@@ -26,7 +26,6 @@ export function TaskCard({ task, handleTaskEditModelOpen }: TaskProps) {
       </Card.Header>
       <Card.Body>{task.description}</Card.Body>
       <Card.Footer
-        mt="auto"
         display="flex"
         justifyContent="space-between"
         alignItems="center"

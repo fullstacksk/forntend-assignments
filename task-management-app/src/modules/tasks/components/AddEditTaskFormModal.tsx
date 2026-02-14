@@ -68,10 +68,9 @@ export function AddEditTaskFormModal({
     e.currentTarget.showPicker?.();
   };
 
-  //   console.log("🚀 ~ file: AddEditTaskFormModal.tsx:11 ~ isEditing:", isEditing);
   return (
     <Dialog.Root
-      size="lg"
+      size="sm"
       placement="center"
       open={open}
       onOpenChange={onOpenChange}
@@ -79,8 +78,8 @@ export function AddEditTaskFormModal({
       <Portal>
         <Dialog.Backdrop />
         <Dialog.Positioner>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Dialog.Content color="black" minW="sm" maxW={"sm"}>
+          <Dialog.Content color="black">
+            <form onSubmit={handleSubmit(onSubmit)}>
               <Dialog.Header>
                 <Dialog.Title>
                   {isEditing ? "Edit Task" : "Add Task"}
@@ -156,17 +155,17 @@ export function AddEditTaskFormModal({
                   {isEditing ? "Update " : "Save"}
                 </Button>
               </Dialog.Footer>
-              <Dialog.CloseTrigger asChild>
-                <CloseButton
-                  size="sm"
-                  variant="outline"
-                  border={"1px solid black"}
-                  bg="white"
-                  _hover={{ bg: "black", color: "white" }}
-                />
-              </Dialog.CloseTrigger>
-            </Dialog.Content>
-          </form>
+            </form>
+            <Dialog.CloseTrigger asChild>
+              <CloseButton
+                size="sm"
+                variant="outline"
+                border={"1px solid black"}
+                bg="white"
+                _hover={{ bg: "black", color: "white" }}
+              />
+            </Dialog.CloseTrigger>
+          </Dialog.Content>
         </Dialog.Positioner>
       </Portal>
     </Dialog.Root>

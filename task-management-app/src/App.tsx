@@ -1,6 +1,5 @@
-import "./App.css";
 import { TaskDashboard } from "./modules/tasks/components/TaskDashboard";
-import { ChakraUIProvider } from "./providers/ChakraUiProvider";
+import { ChakraUIProvider } from "./providers/ChakraUIProvider";
 import { ReduxProvider } from "./providers/ReduxProvider";
 
 function App() {

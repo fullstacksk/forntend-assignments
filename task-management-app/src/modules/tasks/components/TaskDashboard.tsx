@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { TaskList } from "./TaskList";
@@ -30,6 +29,7 @@ export function TaskDashboard() {
   const taskSummary = getTaskSummary(filteredAndSortedTasks);
 
   useEffect(() => {
+    /* eslint-disable react-hooks/exhaustive-deps */
     dispatch(setTasks(fakeTasks.slice(0, 5)));
   }, []);
 
@@ -42,38 +42,65 @@ export function TaskDashboard() {
   };
 
   return (
-    <Box w="1200px" p={4}>
-      <Flex mb={4} justifyContent="space-between" borderRadius="md" gap={2}>
-        <TaskStatusFilter
-          filterStatus={filterStatus}
-          setFilterStatus={setFilterStatus}
+    <Flex justifyContent="center" bg="blue.100" minHeight="100vh">
+      <Box p={4} maxWidth="6xl" w="full">
+        <Flex
+          mb={4}
+          borderRadius="md"
+          gap={2}
+          direction={{
+            base: "column",
+            md: "row",
+          }}
+          align={{
+            base: "stretch",
+            md: "center",
+          }}
+          justify={{
+            base: "center",
+            md: "center",
+          }}
+        >
+          <Flex gap={2} flexGrow={1}>
+            <TaskStatusFilter
+              filterStatus={filterStatus}
+              setFilterStatus={setFilterStatus}
+            />
+            <Button
+              bg="blue.600"
+              color="white"
+              _hover={{ bg: "blue.700" }}
+              size="xl"
+              onClick={handleSortOrderChange}
+            >
+              Due Date {isSortedAsc ? <RiSortAsc /> : <RiSortDesc />}
+            </Button>
+          </Flex>
+          <TaskSummary taskSummary={taskSummary} />
+          <Button
+            position={{ base: "fixed", lg: "static" }}
+            bottom={{ base: "24px", lg: "auto" }}
+            right={{ base: "24px", lg: "auto" }}
+            zIndex={1000}
+            shadow={{ base: "lg", lg: "none" }}
+            borderRadius={{ base: "full", lg: "md" }}
+            px={{ base: 6, lg: 4 }}
+            bg="blue.600"
+            color="white"
+            _hover={{ bg: "blue.700" }}
+            size={{ base: "lg", lg: "xl" }}
+            onClick={handleOnOpenChange}
+          >
+            + Add Task
+          </Button>
+        </Flex>
+        <TaskList tasks={filteredAndSortedTasks} />
+        <AddEditTaskFormModal
+          open={isModalOpen}
+          onOpenChange={handleOnOpenChange}
+          isEditing={false}
         />
-        <Button
-          bg="blue.600"
-          color="white"
-          _hover={{ bg: "blue.700" }}
-          size="xl"
-          onClick={handleSortOrderChange}
-        >
-          Due Date {isSortedAsc ? <RiSortAsc /> : <RiSortDesc />}
-        </Button>
-        <TaskSummary taskSummary={taskSummary} />
-        <Button
-          bg="blue.600"
-          color="white"
-          _hover={{ bg: "blue.700" }}
-          size="xl"
-          onClick={handleOnOpenChange}
-        >
-          + Add Task
-        </Button>
-      </Flex>
-      <TaskList tasks={filteredAndSortedTasks} />
-      <AddEditTaskFormModal
-        open={isModalOpen}
-        onOpenChange={handleOnOpenChange}
-        isEditing={false}
-      />
-    </Box>
+      </Box>
+    </Flex>
   );
 }

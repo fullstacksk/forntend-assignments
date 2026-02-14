@@ -16,7 +16,15 @@ export function TaskList({ tasks }: TaskListProps) {
 
   return (
     <>
-      <Grid templateColumns={"repeat(3, 1fr)"} gap={4} mb={4}>
+      <Grid
+        templateColumns={{
+          base: "1fr",
+          sm: "repeat(2, 1fr)",
+          lg: "repeat(3, 1fr)",
+        }}
+        gap={4}
+        mb={4}
+      >
         {tasks.map((task) => (
           <GridItem key={task.id}>
             <TaskCard
