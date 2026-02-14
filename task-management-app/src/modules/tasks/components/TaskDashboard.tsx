@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
-import { Box, Button, Flex, Tabs } from "@chakra-ui/react";
+import { Box, Flex, Tabs } from "@chakra-ui/react";
 import { TaskList } from "./TaskList";
-import { TaskSummary } from "./TaskSummary";
 import {
   filterTasksByStatus,
   getTaskSummary,
@@ -10,11 +9,11 @@ import {
 import type { RootState } from "../../../store";
 import { useSelector } from "react-redux";
 import { AddEditTaskFormModal } from "./AddEditTaskFormModal";
-import { TaskStatusFilter } from "./TaskStatusFilter";
 import type { TaskStatus } from "../types/tasks";
-import { RiSortAsc, RiSortDesc, RiTaskLine } from "react-icons/ri";
+import { RiTaskLine } from "react-icons/ri";
 import { NoTaskFound } from "./NoTaskFound";
 import { GoTasklist } from "react-icons/go";
+import { TaskDashboardHeader } from "./TaskDashboardHeader";
 
 export function TaskDashboard() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -51,56 +50,14 @@ export function TaskDashboard() {
   return (
     <Flex justifyContent="center" bg="blue.100" minHeight="100vh">
       <Box p={4} maxWidth="6xl" w="full">
-        <Flex
-          mb={4}
-          borderRadius="md"
-          gap={2}
-          direction={{
-            base: "column",
-            md: "row",
-          }}
-          align={{
-            base: "stretch",
-            md: "center",
-          }}
-          justify={{
-            base: "center",
-            md: "center",
-          }}
-        >
-          <Flex gap={2} flexGrow={1}>
-            <TaskStatusFilter
-              filterStatus={filterStatus}
-              setFilterStatus={setFilterStatus}
-            />
-            <Button
-              bg="blue.600"
-              color="white"
-              _hover={{ bg: "blue.700" }}
-              size="xl"
-              onClick={handleSortOrderChange}
-            >
-              Due Date {isSortedAsc ? <RiSortAsc /> : <RiSortDesc />}
-            </Button>
-          </Flex>
-          <TaskSummary taskSummary={taskSummary} />
-          <Button
-            position={{ base: "fixed", lg: "static" }}
-            bottom={{ base: "24px", lg: "auto" }}
-            right={{ base: "24px", lg: "auto" }}
-            zIndex={1000}
-            shadow={{ base: "lg", lg: "none" }}
-            borderRadius={{ base: "full", lg: "md" }}
-            px={{ base: 6, lg: 4 }}
-            bg="blue.600"
-            color="white"
-            _hover={{ bg: "blue.700" }}
-            size={{ base: "lg", lg: "xl" }}
-            onClick={handleOnOpenChange}
-          >
-            + Add Task
-          </Button>
-        </Flex>
+        <TaskDashboardHeader
+          filterStatus={filterStatus}
+          setFilterStatus={setFilterStatus}
+          isSortedAsc={isSortedAsc}
+          handleSortOrderChange={handleSortOrderChange}
+          handleOnOpenChange={handleOnOpenChange}
+          taskSummary={taskSummary}
+        />
         <Tabs.Root
           defaultValue="all-tasks"
           variant="line"
