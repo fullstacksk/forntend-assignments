@@ -6,15 +6,20 @@ import { useState } from "react";
 
 interface TaskListProps {
   tasks: Task[];
+  showCompleted?: boolean;
 }
-export function TaskList({ tasks }: TaskListProps) {
+export function TaskList({ tasks, showCompleted = false }: TaskListProps) {
   const [editingTask, setEditingTask] = useState<Task | null>(null);
+
+  const filteredTasks = showCompleted
+    ? tasks.filter((task) => task.status === "COMPLETED")
+    : tasks;
 
   const handleOpenChange = (task: Task) => {
     setEditingTask(task);
   };
 
-  if (tasks.length === 0) {
+  if (filteredTasks.length === 0) {
     return (
       <Text fontSize="lg" textAlign="center" mt={10}>
         No relevant tasks found.
@@ -33,7 +38,7 @@ export function TaskList({ tasks }: TaskListProps) {
         gap={4}
         mb={4}
       >
-        {tasks.map((task) => (
+        {filteredTasks.map((task) => (
           <GridItem key={task.id}>
             <TaskCard
               task={task}

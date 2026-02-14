@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { useMemo, useState } from "react";
+import { Box, Button, Flex, Tabs } from "@chakra-ui/react";
 import { TaskList } from "./TaskList";
 import { TaskSummary } from "./TaskSummary";
 import {
@@ -12,8 +12,9 @@ import { useSelector } from "react-redux";
 import { AddEditTaskFormModal } from "./AddEditTaskFormModal";
 import { TaskStatusFilter } from "./TaskStatusFilter";
 import type { TaskStatus } from "../types/tasks";
-import { RiSortAsc, RiSortDesc } from "react-icons/ri";
+import { RiSortAsc, RiSortDesc, RiTaskLine } from "react-icons/ri";
 import { NoTaskFound } from "./NoTaskFound";
+import { GoTasklist } from "react-icons/go";
 
 export function TaskDashboard() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,9 +23,19 @@ export function TaskDashboard() {
 
   const { tasks } = useSelector((state: RootState) => state.tasks);
 
-  const filteredTasks = filterTasksByStatus(tasks, filterStatus);
-  const filteredAndSortedTasks = sortTasksByDueDate(filteredTasks, isSortedAsc);
-  const taskSummary = getTaskSummary(filteredAndSortedTasks);
+  const filteredTasks = useMemo(
+    () => filterTasksByStatus(tasks, filterStatus),
+    [tasks, filterStatus],
+  );
+  const filteredAndSortedTasks = useMemo(
+    () => sortTasksByDueDate(filteredTasks, isSortedAsc),
+    [filteredTasks, isSortedAsc],
+  );
+
+  const taskSummary = useMemo(
+    () => getTaskSummary(filteredTasks),
+    [filteredTasks],
+  );
 
   const handleOnOpenChange = () => {
     setIsModalOpen((prev) => !prev);
@@ -90,7 +101,28 @@ export function TaskDashboard() {
             + Add Task
           </Button>
         </Flex>
-        <TaskList tasks={filteredAndSortedTasks} />
+        <Tabs.Root
+          defaultValue="all-tasks"
+          variant="line"
+          colorPalette={"blue"}
+        >
+          <Tabs.List borderColor="blue.300">
+            <Tabs.Trigger value="all-tasks">
+              <GoTasklist />
+              All Tasks
+            </Tabs.Trigger>
+            <Tabs.Trigger value="completed-tasks">
+              <RiTaskLine />
+              Completed Tasks
+            </Tabs.Trigger>
+          </Tabs.List>
+          <Tabs.Content value="all-tasks">
+            <TaskList tasks={filteredAndSortedTasks} />
+          </Tabs.Content>
+          <Tabs.Content value="completed-tasks">
+            <TaskList tasks={filteredAndSortedTasks} showCompleted />
+          </Tabs.Content>
+        </Tabs.Root>
         <AddEditTaskFormModal
           open={isModalOpen}
           onOpenChange={handleOnOpenChange}
