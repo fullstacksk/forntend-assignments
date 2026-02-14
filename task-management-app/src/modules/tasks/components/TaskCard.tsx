@@ -1,12 +1,21 @@
 import { TaskStatusEnum, type Task } from "../types/tasks";
-import { Badge, Card, Flex, Text } from "@chakra-ui/react";
+import { Badge, Card, Flex, IconButton, Text } from "@chakra-ui/react";
 import { getStatusColor } from "../utils/getStatusColor";
+import { MdDelete } from "react-icons/md";
+import type { AppDispatch } from "../../../store";
+import { useDispatch } from "react-redux";
+import { deleteTask } from "../../../store/slices/taskSlice";
 
 interface TaskProps {
   task: Task;
 }
 
 export function TaskCard({ task }: TaskProps) {
+  const dispatch = useDispatch<AppDispatch>();
+  const handleTaskDelete = (taskId: string) => {
+    dispatch(deleteTask(taskId));
+  };
+
   return (
     <Card.Root key={task.id} display="flex" flexDirection="column" h="250px">
       <Card.Header pb={3}>
@@ -15,8 +24,24 @@ export function TaskCard({ task }: TaskProps) {
         </Card.Title>
       </Card.Header>
       <Card.Body>{task.description}</Card.Body>
-      <Card.Footer>
+      <Card.Footer
+        mt="auto"
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+      >
         <Badge colorPalette={"red"}>{` Due by ${task.dueDate}`}</Badge>
+        <Flex gap={2}>
+          <IconButton
+            aria-label="Delete task"
+            bg="red.500"
+            color="white"
+            _hover={{ bg: "red.600" }}
+            onClick={() => handleTaskDelete(task.id!)}
+          >
+            <MdDelete />
+          </IconButton>
+        </Flex>
       </Card.Footer>
     </Card.Root>
   );
