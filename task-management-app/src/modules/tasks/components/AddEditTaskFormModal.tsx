@@ -12,7 +12,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Select } from "chakra-react-select";
 import type { AppDispatch } from "../../../store";
 import { useDispatch } from "react-redux";
-import { addTask } from "../../../store/slices/taskSlice";
+import { addTask, updateTask } from "../../../store/slices/taskSlice";
+import { useEffect } from "react";
 
 const statusOptions = [
   { label: "Pending", value: "PENDING" },
@@ -24,11 +25,13 @@ interface AddEditTaskFormModalProps {
   open: boolean;
   onOpenChange: () => void;
   isEditing?: boolean;
+  task?: Task | null;
 }
 export function AddEditTaskFormModal({
   open,
   onOpenChange,
   isEditing,
+  task,
 }: AddEditTaskFormModalProps) {
   const dispatch = useDispatch<AppDispatch>();
   const {
@@ -37,13 +40,31 @@ export function AddEditTaskFormModal({
     control,
     reset,
     formState: { errors },
-  } = useForm<Task>({ resolver: zodResolver(taskInputSchema) });
+  } = useForm<Task>({
+    resolver: zodResolver(taskInputSchema),
+    defaultValues: {},
+  });
+
+  useEffect(() => {
+    if (task) {
+      reset({
+        status: task.status,
+        title: task.title,
+        description: task.description,
+        dueDate: task.dueDate,
+      });
+    }
+  }, [task, reset]);
 
   const onSubmit: SubmitHandler<Task> = (data) => {
-    console.log("Form submitted with data:", data);
-    const task = { ...data, id: crypto.randomUUID() };
-    dispatch(addTask(task));
-    console.log("Task created:", task);
+    if (!isEditing) {
+      // Handle creating new task
+      const task = { ...data, id: crypto.randomUUID() };
+      dispatch(addTask(task));
+    } else {
+      // Handle editing existing task
+      dispatch(updateTask({ ...data, id: task?.id }));
+    }
     reset();
     onOpenChange();
   };
@@ -137,7 +158,7 @@ export function AddEditTaskFormModal({
                   _hover={{ bg: "blue.700" }}
                   minW={"100px"}
                 >
-                  Save
+                  {isEditing ? "Update " : "Save"}
                 </Button>
               </Dialog.Footer>
               <Dialog.CloseTrigger asChild>

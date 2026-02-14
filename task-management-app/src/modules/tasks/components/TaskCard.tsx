@@ -1,16 +1,17 @@
 import { TaskStatusEnum, type Task } from "../types/tasks";
 import { Badge, Card, Flex, IconButton, Text } from "@chakra-ui/react";
 import { getStatusColor } from "../utils/getStatusColor";
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdModeEdit } from "react-icons/md";
 import type { AppDispatch } from "../../../store";
 import { useDispatch } from "react-redux";
 import { deleteTask } from "../../../store/slices/taskSlice";
 
 interface TaskProps {
   task: Task;
+  handleTaskEditModelOpen?: () => void;
 }
 
-export function TaskCard({ task }: TaskProps) {
+export function TaskCard({ task, handleTaskEditModelOpen }: TaskProps) {
   const dispatch = useDispatch<AppDispatch>();
   const handleTaskDelete = (taskId: string) => {
     dispatch(deleteTask(taskId));
@@ -40,6 +41,16 @@ export function TaskCard({ task }: TaskProps) {
             onClick={() => handleTaskDelete(task.id!)}
           >
             <MdDelete />
+          </IconButton>
+
+          <IconButton
+            aria-label="Edit task"
+            bg="blue.500"
+            color="white"
+            _hover={{ bg: "blue.600" }}
+            onClick={handleTaskEditModelOpen}
+          >
+            <MdModeEdit />
           </IconButton>
         </Flex>
       </Card.Footer>

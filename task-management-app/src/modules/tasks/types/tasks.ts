@@ -12,7 +12,10 @@ export const TaskStatusEnum = {
 export const taskInputSchema = z.object({
   id: z.string().optional(),
   title: z.string().trim().min(1, "Title is required"),
-  description: z.string().optional(),
+  description: z
+    .string()
+    .max(100, "Description must be at most 100 characters")
+    .optional(),
   status: z.enum(
     ["PENDING", "IN_PROGRESS", "COMPLETED"],
     "Invalid status value",
