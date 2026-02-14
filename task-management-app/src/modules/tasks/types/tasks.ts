@@ -25,7 +25,7 @@ export const taskInputSchema = z.object({
       const parsedDate = Date.parse(date);
       return !isNaN(parsedDate);
     },
-    { message: "Due date must be a valid date" },
+    { error: "Due date must be a valid date" },
   ),
 });
 

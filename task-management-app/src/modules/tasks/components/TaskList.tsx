@@ -1,4 +1,4 @@
-import { Grid, GridItem } from "@chakra-ui/react";
+import { Grid, GridItem, Text } from "@chakra-ui/react";
 import { TaskCard } from "./TaskCard";
 import type { Task } from "../types/tasks";
 import { AddEditTaskFormModal } from "./AddEditTaskFormModal";
@@ -13,6 +13,14 @@ export function TaskList({ tasks }: TaskListProps) {
   const handleOpenChange = (task: Task) => {
     setEditingTask(task);
   };
+
+  if (tasks.length === 0) {
+    return (
+      <Text fontSize="lg" textAlign="center" mt={10}>
+        No relevant tasks found.
+      </Text>
+    );
+  }
 
   return (
     <>

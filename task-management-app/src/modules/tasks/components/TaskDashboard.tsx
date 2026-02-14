@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { TaskList } from "./TaskList";
 import { TaskSummary } from "./TaskSummary";
@@ -7,31 +7,24 @@ import {
   getTaskSummary,
   sortTasksByDueDate,
 } from "../utils/taskUtils";
-import type { AppDispatch, RootState } from "../../../store";
-import { useDispatch, useSelector } from "react-redux";
-import { setTasks } from "../../../store/slices/taskSlice";
-import { fakeTasks } from "../../../data";
+import type { RootState } from "../../../store";
+import { useSelector } from "react-redux";
 import { AddEditTaskFormModal } from "./AddEditTaskFormModal";
 import { TaskStatusFilter } from "./TaskStatusFilter";
 import type { TaskStatus } from "../types/tasks";
 import { RiSortAsc, RiSortDesc } from "react-icons/ri";
+import { NoTaskFound } from "./NoTaskFound";
 
 export function TaskDashboard() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [filterStatus, setFilterStatus] = useState<TaskStatus>();
   const [isSortedAsc, setIsSortedAsc] = useState(true);
 
-  const dispatch = useDispatch<AppDispatch>();
   const { tasks } = useSelector((state: RootState) => state.tasks);
 
   const filteredTasks = filterTasksByStatus(tasks, filterStatus);
   const filteredAndSortedTasks = sortTasksByDueDate(filteredTasks, isSortedAsc);
   const taskSummary = getTaskSummary(filteredAndSortedTasks);
-
-  useEffect(() => {
-    /* eslint-disable react-hooks/exhaustive-deps */
-    dispatch(setTasks(fakeTasks.slice(0, 5)));
-  }, []);
 
   const handleOnOpenChange = () => {
     setIsModalOpen((prev) => !prev);
@@ -41,6 +34,9 @@ export function TaskDashboard() {
     setIsSortedAsc((prev) => !prev);
   };
 
+  if (tasks.length === 0) {
+    return <NoTaskFound />;
+  }
   return (
     <Flex justifyContent="center" bg="blue.100" minHeight="100vh">
       <Box p={4} maxWidth="6xl" w="full">
