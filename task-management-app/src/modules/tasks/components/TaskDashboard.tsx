@@ -6,21 +6,21 @@ import {
   getTaskSummary,
   sortTasksByDueDate,
 } from "../utils/taskUtils";
-import type { RootState } from "../../../store";
-import { useSelector } from "react-redux";
 import { AddEditTaskFormModal } from "./AddEditTaskFormModal";
 import type { TaskStatus } from "../types/tasks";
 import { RiTaskLine } from "react-icons/ri";
 import { NoTaskFound } from "./NoTaskFound";
 import { GoTasklist } from "react-icons/go";
 import { TaskDashboardHeader } from "./TaskDashboardHeader";
+import { useTaskContext } from "../hooks/useTaskContext";
 
 export function TaskDashboard() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [filterStatus, setFilterStatus] = useState<TaskStatus>();
   const [isSortedAsc, setIsSortedAsc] = useState(true);
 
-  const { tasks } = useSelector((state: RootState) => state.tasks);
+  // const { tasks } = useSelector((state: RootState) => state.tasks);
+  const { tasks } = useTaskContext();
 
   const filteredTasks = useMemo(
     () => filterTasksByStatus(tasks, filterStatus),

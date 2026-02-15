@@ -10,11 +10,9 @@ import { useForm, type SubmitHandler, Controller } from "react-hook-form";
 import { taskInputSchema, type Task } from "../types/tasks";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Select } from "chakra-react-select";
-import type { AppDispatch } from "../../../store";
-import { useDispatch } from "react-redux";
-import { addTask, updateTask } from "../../../store/slices/taskSlice";
 import { useEffect } from "react";
 import { taskStatusOptions } from "../utils/constants";
+import { useTaskContext } from "../hooks/useTaskContext";
 
 interface AddEditTaskFormModalProps {
   open: boolean;
@@ -28,7 +26,7 @@ export function AddEditTaskFormModal({
   isEditing,
   task,
 }: AddEditTaskFormModalProps) {
-  const dispatch = useDispatch<AppDispatch>();
+  const { addTask, updateTask } = useTaskContext();
   const {
     register,
     handleSubmit,
@@ -55,10 +53,10 @@ export function AddEditTaskFormModal({
     if (!isEditing) {
       // Handle creating new task
       const task = { ...data, id: crypto.randomUUID() };
-      dispatch(addTask(task));
+      addTask(task);
     } else {
       // Handle editing existing task
-      dispatch(updateTask({ ...data, id: task?.id }));
+      updateTask(task!.id!, data);
     }
     reset();
     onOpenChange();

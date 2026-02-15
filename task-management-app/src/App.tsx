@@ -1,13 +1,13 @@
 import { TaskDashboard } from "./modules/tasks/components/TaskDashboard";
+import { TaskProvider } from "./modules/tasks/contexts/TaskContext";
 import { ChakraUIProvider } from "./providers/ChakraUIProvider";
-import { ReduxProvider } from "./providers/ReduxProvider";
 
 function App() {
   return (
     <ChakraUIProvider>
-      <ReduxProvider>
+      <TaskProvider>
         <TaskDashboard />
-      </ReduxProvider>
+      </TaskProvider>
     </ChakraUIProvider>
   );
 }

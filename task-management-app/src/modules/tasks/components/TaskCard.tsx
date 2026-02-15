@@ -2,9 +2,7 @@ import { TaskStatusEnum, type Task } from "../types/tasks";
 import { Badge, Card, Flex, IconButton, Text } from "@chakra-ui/react";
 import { getStatusColor } from "../utils/getStatusColor";
 import { MdDelete, MdModeEdit } from "react-icons/md";
-import type { AppDispatch } from "../../../store";
-import { useDispatch } from "react-redux";
-import { deleteTask } from "../../../store/slices/taskSlice";
+import { useTaskContext } from "../hooks/useTaskContext";
 
 interface TaskProps {
   task: Task;
@@ -12,9 +10,9 @@ interface TaskProps {
 }
 
 export function TaskCard({ task, handleTaskEditModelOpen }: TaskProps) {
-  const dispatch = useDispatch<AppDispatch>();
+  const { deleteTask } = useTaskContext();
   const handleTaskDelete = (taskId: string) => {
-    dispatch(deleteTask(taskId));
+    deleteTask(taskId);
   };
 
   return (
